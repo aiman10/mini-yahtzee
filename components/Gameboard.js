@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, Modal } from "react-native";
 import styles from "../style/style"; // Ensure this is used or remove if unnecessary
 import Header from "./Header";
 import Footer from "./Footer";
@@ -39,6 +39,7 @@ export default function Gameboard({ navigation, route }) {
   const [bonusStatus, setBonusStatus] = useState(
     `You are ${BONUS_POINTS_LIMIT} points away from bonus`
   );
+  const [showGameOverModal, setShowGameOverModal] = useState(false);
 
   useEffect(() => {
     if (route.params?.player) {
@@ -52,6 +53,7 @@ export default function Gameboard({ navigation, route }) {
       setStatus("Game over. Restart to play again.");
       setGameEndStatus(true);
       setNbrOfThrowsLeft(0);
+      setShowGameOverModal(true);
       const newHighscore = {
         player: playerName,
         score: totalScore,
@@ -100,11 +102,6 @@ export default function Gameboard({ navigation, route }) {
   );
 
   const throwDices = () => {
-    //disable throw dices button if game is over
-    if (gameEndStatus) {
-      setStatus("Game over. Restart to play again.");
-      return;
-    }
     if (nbrOfThrowsLeft > 0 && totalAmountThrows <= MAX_NBR_OF_THROWS) {
       const newDiceSpots = diceSpots.map((spot, index) =>
         selectedDices[index] ? spot : Math.floor(Math.random() * 6) + 1
@@ -118,14 +115,17 @@ export default function Gameboard({ navigation, route }) {
     } else {
       setStatus("No throws left");
     }
-    if (totalAmountThrows >= 17) {
+    if (gameEndStatus) {
       setGameEndStatus(true);
+      setShowGameOverModal(true);
       setStatus("Game over. Restart to play again.");
     }
   };
 
   const handleDiceSelection = (index) => {
     if (gameEndStatus) {
+      setShowGameOverModal(true);
+
       setStatus("Game over. Restart to play again.");
       return;
     }
@@ -141,6 +141,7 @@ export default function Gameboard({ navigation, route }) {
 
   handlePointSelection = (index) => {
     if (gameEndStatus) {
+      setShowGameOverModal(true);
       setStatus("Game over. Restart to play again.");
       return;
     }
@@ -201,6 +202,22 @@ export default function Gameboard({ navigation, route }) {
       setBonusStatus(`Bonus achieved! (${BONUS_POINTS}) points added`);
     }
   };
+
+  const resetGameState = () => {
+    // Reset all game states to their initial values
+    setNbrOfThrowsLeft(NBR_OF_THROWS);
+    setSelectedDices(new Array(NBR_OF_DICES).fill(false));
+    setDiceSpots(new Array(NBR_OF_DICES).fill(0));
+    setSelectedPointsIndexes(new Array(MAX_SPOT).fill(false));
+    setScores(Array(MAX_SPOT).fill(0));
+    setTotalScore(0);
+    setBonusAchieved(false);
+    setHighscoreSaved(false);
+    setTotalAmountThrows(0);
+    setGameEndStatus(false);
+    setBonusStatus(`You are ${BONUS_POINTS_LIMIT} points away from bonus`);
+  };
+
   const calculatePointsForNumber = (number) => {
     const count = diceSpots.filter((spot) => spot === number).length;
     return number * count;
@@ -272,6 +289,44 @@ export default function Gameboard({ navigation, route }) {
           </View>
         </View>
         <Text style={styles.playerName}>Player: {playerName}</Text>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showGameOverModal}
+          onRequestClose={() => {
+            setShowGameOverModal(!showGameOverModal);
+          }}>
+          {/* Outer View to detect presses outside the modal content */}
+          <Pressable
+            style={styles.fullScreenCentered}
+            onPress={() => setShowGameOverModal(false)}>
+            {/* Prevent Modal Close when pressing the modal itself */}
+            <Pressable onPress={(e) => e.stopPropagation()}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Game Over!</Text>
+                  <Pressable
+                    style={[styles.buttonClose]}
+                    onPress={() => {
+                      setShowGameOverModal(!showGameOverModal);
+                      // Reset game state to play again
+                      resetGameState();
+                    }}>
+                    <Text style={styles.textStyle}>Play Again</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.buttonClose]}
+                    onPress={() => {
+                      setShowGameOverModal(!showGameOverModal);
+                      navigation.navigate("Scoreboard"); // Assume your scoreboard screen is named 'Scoreboard'
+                    }}>
+                    <Text style={styles.textStyle}>View Highscore</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </Pressable>
+          </Pressable>
+        </Modal>
       </View>
       <Footer />
     </>

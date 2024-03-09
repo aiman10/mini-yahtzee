@@ -174,4 +174,51 @@ export default StyleSheet.create({
     flex: 1,
     textAlign: "right",
   },
+
+  //Modal
+  fullScreenCentered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+  },
+
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+    width: 150,
+    height: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    elevation: 2,
+    marginTop: 15,
+    borderColor: "#EF6C00",
+    borderWidth: 2,
+  },
+
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    textAlign: "center",
+  },
 });
