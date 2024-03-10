@@ -84,7 +84,7 @@ export default Scoreboard = () => {
     <>
       <Header />
 
-      <View>
+      <View style={{ backgroundColor: "#FFF3E0" }}>
         <MaterialCommunityIcons
           name="clipboard-list"
           size={70}

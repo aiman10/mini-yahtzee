@@ -4,12 +4,25 @@ import Scoreboard from "./components/Scoreboard";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useFonts } from "expo-font";
 import { Pressable, Text, TextInput, View, Keyboard } from "react-native";
 import style from "./style/style";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [loaded] = useFonts({
+    "Comfortaa-Regular": require("./fonts/Comfortaa-Regular.ttf"),
+    "Comfortaa-Bold": require("./fonts/Comfortaa-Bold.ttf"),
+    "Comfortaa-Light": require("./fonts/Comfortaa-Light.ttf"),
+    "Comfortaa-Medium": require("./fonts/Comfortaa-Medium.ttf"),
+    "Comfortaa-SemiBold": require("./fonts/Comfortaa-SemiBold.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Tab.Navigator

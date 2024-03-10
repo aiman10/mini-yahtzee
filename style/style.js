@@ -23,6 +23,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     borderColor: "#DD6E42",
     borderWidth: 2,
+    fontFamily: "Comfortaa-Bold",
   },
   title: {
     color: "#FFF3E0",
@@ -31,6 +32,7 @@ export default StyleSheet.create({
     fontSize: 23,
     textAlign: "center",
     margin: 10,
+    fontFamily: "Comfortaa-Bold",
   },
   author: {
     color: "#5D4037",
@@ -39,6 +41,7 @@ export default StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     margin: 10,
+    fontFamily: "Comfortaa-Light",
   },
   gameboard: {
     backgroundColor: "#FFF3E0",
@@ -54,6 +57,7 @@ export default StyleSheet.create({
     backgroundColor: "#FFF3E0",
     padding: 10,
     borderRadius: 5,
+    fontFamily: "Comfortaa-Regular",
   },
 
   noScores: {
@@ -66,20 +70,23 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginBottom: 403,
+    fontFamily: "Comfortaa-Regular",
   },
   rulesTitle: {
     color: "#FF6F00",
     fontSize: 20,
-    fontWeight: "bold",
+    // fontWeight: "bold",
     marginVertical: 10,
     textAlign: "center",
     marginTop: 20,
+    fontFamily: "Comfortaa-Bold",
   },
   row: {
     marginTop: 20,
     padding: 10,
     borderColor: "#FFB74D",
     borderWidth: 1,
+    fontFamily: "Comfortaa-Regular",
   },
   flex: {
     flexDirection: "row",
@@ -96,11 +103,13 @@ export default StyleSheet.create({
     alignItems: "center",
     borderColor: "#EF6C00",
     borderWidth: 2,
+    fontFamily: "Comfortaa-Regular",
   },
   buttonText: {
     color: "#FFFFFF",
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
+    fontFamily: "Comfortaa-Regular",
   },
   textInput: {
     height: 40,
@@ -113,8 +122,9 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     fontSize: 16,
-    fontWeight: "500",
+    //fontWeight: "500",
     textAlign: "center",
+    fontFamily: "Comfortaa-Regular",
   },
   staticDicesTopContainer: {
     justifyContent: "center",
@@ -130,28 +140,32 @@ export default StyleSheet.create({
   head: {
     height: 40,
     backgroundColor: "#f1f8ff",
+    fontFamily: "Comfortaa-Regular",
   },
   text: {
     textAlign: "center",
-    fontWeight: "200",
+    //fontWeight: "200",
+    fontFamily: "Comfortaa-Regular",
   },
   row: {
     height: 28,
     backgroundColor: "#E7E6E1",
+    fontFamily: "Comfortaa-Regular",
   },
 
   cardContainer: {
     padding: 0,
     margin: 0,
-    borderWidth: 0, // Remove card border
+    borderWidth: 0,
+    fontFamily: "Comfortaa-Regular",
   },
   scoreRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
-
+    fontFamily: "Comfortaa-Regular",
     borderBottomWidth: 1,
-    borderBottomColor: "gray", // Add border to each row
+    borderBottomColor: "gray",
   },
   cell: {
     fontSize: 18,
@@ -161,18 +175,21 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
-    backgroundColor: "lightgray", // Different background for header
+    backgroundColor: "lightgray",
+    fontFamily: "Comfortaa-Regular",
   },
   headerCell: {
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     flex: 1,
+    fontFamily: "Comfortaa-Bold",
   },
   scoreHeaderCell: {
     fontSize: 18,
-    fontWeight: "bold",
+    //fontWeight: "bold",
     flex: 1,
     textAlign: "right",
+    fontFamily: "Comfortaa-Regular",
   },
 
   //Modal

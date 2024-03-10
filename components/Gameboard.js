@@ -53,7 +53,10 @@ export default function Gameboard({ navigation, route }) {
       setStatus("Game over. Restart to play again.");
       setGameEndStatus(true);
       setNbrOfThrowsLeft(0);
-      setShowGameOverModal(true);
+      setTimeout(() => {
+        setShowGameOverModal(true);
+      }, 800);
+
       const newHighscore = {
         player: playerName,
         score: totalScore,
@@ -61,6 +64,10 @@ export default function Gameboard({ navigation, route }) {
       };
       storeHighscore(newHighscore);
     }
+    //console.log("Score useEffect: " + totalScore);
+    setBonusStatus(
+      `You are ${BONUS_POINTS_LIMIT - totalScore} points away from bonus`
+    );
   }, [route.params, selectedPointIndexes, playerName, totalScore]);
 
   const storeHighscore = async (newHighscore) => {
@@ -75,7 +82,7 @@ export default function Gameboard({ navigation, route }) {
       const updatedJsonValue = JSON.stringify(updatedHighscores);
       await AsyncStorage.setItem(STORAGE_KEY, updatedJsonValue);
       setHighscoreSaved(true);
-      console.log("Highscore added successfully");
+      //console.log("Highscore added successfully");
     } catch (e) {
       console.error("Failed to store highscore", e);
     }
@@ -142,6 +149,7 @@ export default function Gameboard({ navigation, route }) {
   handlePointSelection = (index) => {
     if (gameEndStatus) {
       setShowGameOverModal(true);
+
       setStatus("Game over. Restart to play again.");
       return;
     }
@@ -154,7 +162,7 @@ export default function Gameboard({ navigation, route }) {
       return;
     }
     if (nbrOfThrowsLeft === 0) {
-      console.log(gameEndStatus);
+      //console.log(gameEndStatus);
       setNbrOfThrowsLeft(3);
       setSelectedDices(new Array(NBR_OF_DICES).fill(false));
     }
@@ -184,23 +192,28 @@ export default function Gameboard({ navigation, route }) {
 
     let newSelectedPointIndexes = [...selectedPointIndexes];
     newSelectedPointIndexes[index] = true;
-    setBonusStatus(
-      `You are ${BONUS_POINTS_LIMIT - totalScore} points away from bonus`
-    );
+    updateTotalScore(newScores);
     setScores(newScores);
     setSelectedPointsIndexes(newSelectedPointIndexes);
-    updateTotalScore(newScores);
+
+    // console.log("Bonus: " + BONUS_POINTS_LIMIT);
+    // console.log("Score: " + totalScore);
   };
 
   const updateTotalScore = (newScores) => {
-    const newTotal = newScores.reduce((acc, curr) => acc + curr, 0);
-    setTotalScore(newTotal);
-
-    if (!bonusAchieved && newTotal >= BONUS_POINTS_LIMIT) {
-      setTotalScore(newTotal + BONUS_POINTS);
+    const newTotalWithoutBonus = newScores.reduce((acc, curr) => acc + curr, 0);
+    let newTotalWithBonus = newTotalWithoutBonus;
+    if (!bonusAchieved && newTotalWithoutBonus >= BONUS_POINTS_LIMIT) {
       setBonusAchieved(true);
-      setBonusStatus(`Bonus achieved! (${BONUS_POINTS}) points added`);
+      newTotalWithBonus += BONUS_POINTS;
+      setBonusStatus(`Bonus achieved! (${BONUS_POINTS} points added)`);
+    } else if (bonusAchieved) {
+      newTotalWithBonus = newTotalWithoutBonus + BONUS_POINTS;
     }
+
+    setTotalScore(newTotalWithBonus);
+    //console.log("Score updateTotalScore: " + totalScore);
+    return newScores;
   };
 
   const resetGameState = () => {
@@ -218,10 +231,10 @@ export default function Gameboard({ navigation, route }) {
     setBonusStatus(`You are ${BONUS_POINTS_LIMIT} points away from bonus`);
   };
 
-  const calculatePointsForNumber = (number) => {
-    const count = diceSpots.filter((spot) => spot === number).length;
-    return number * count;
-  };
+  // const calculatePointsForNumber = (number) => {
+  //   const count = diceSpots.filter((spot) => spot === number).length;
+  //   return number * count;
+  // };
 
   const circleIconsRow = Array.from({ length: MAX_SPOT }, (_, index) => (
     <View key={index} style={{ alignItems: "center", marginHorizontal: 5 }}>
@@ -265,17 +278,36 @@ export default function Gameboard({ navigation, route }) {
             </Container>
           </>
         )}
-        <Text style={{ marginBottom: 10, fontSize: 18 }}>
+        <Text
+          style={{
+            marginBottom: 10,
+            fontSize: 18,
+            fontFamily: "Comfortaa-Bold",
+          }}>
           Throws left: {nbrOfThrowsLeft}
         </Text>
-        <Text style={{ marginBottom: 5, fontSize: 15 }}>{status}</Text>
+        <Text
+          style={{
+            marginBottom: 5,
+            fontSize: 15,
+            fontFamily: "Comfortaa-Regular",
+          }}>
+          {status}
+        </Text>
         <Pressable style={styles.button} onPress={throwDices}>
           <Text style={styles.buttonText}>Throw Dices</Text>
         </Pressable>
-        <Text style={{ marginBottom: 15, fontSize: 30 }}>
+        <Text
+          style={{
+            marginBottom: 15,
+            fontSize: 25,
+            fontFamily: "Comfortaa-Bold",
+          }}>
           Total: {totalScore}
         </Text>
-        <Text style={{ marginBottom: 10 }}>{bonusStatus}</Text>
+        <Text style={{ marginBottom: 10, fontFamily: "Comfortaa-Regular" }}>
+          {bonusStatus}
+        </Text>
 
         <View style={{ alignItems: "center" }}>
           <View
@@ -288,7 +320,9 @@ export default function Gameboard({ navigation, route }) {
             {circleIconsRow}
           </View>
         </View>
-        <Text style={styles.playerName}>Player: {playerName}</Text>
+        <Text style={{ fontFamily: "Comfortaa-Regular" }}>
+          Player: {playerName}
+        </Text>
         <Modal
           animationType="slide"
           transparent={true}
