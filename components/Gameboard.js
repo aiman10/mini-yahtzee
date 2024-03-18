@@ -217,7 +217,6 @@ export default function Gameboard({ navigation, route }) {
   };
 
   const resetGameState = () => {
-    // Reset all game states to their initial values
     setNbrOfThrowsLeft(NBR_OF_THROWS);
     setSelectedDices(new Array(NBR_OF_DICES).fill(false));
     setDiceSpots(new Array(NBR_OF_DICES).fill(0));
@@ -330,11 +329,9 @@ export default function Gameboard({ navigation, route }) {
           onRequestClose={() => {
             setShowGameOverModal(!showGameOverModal);
           }}>
-          {/* Outer View to detect presses outside the modal content */}
           <Pressable
             style={styles.fullScreenCentered}
             onPress={() => setShowGameOverModal(false)}>
-            {/* Prevent Modal Close when pressing the modal itself */}
             <Pressable onPress={(e) => e.stopPropagation()}>
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -343,7 +340,6 @@ export default function Gameboard({ navigation, route }) {
                     style={[styles.buttonClose]}
                     onPress={() => {
                       setShowGameOverModal(!showGameOverModal);
-                      // Reset game state to play again
                       resetGameState();
                     }}>
                     <Text style={styles.textStyle}>Play Again</Text>
@@ -352,7 +348,7 @@ export default function Gameboard({ navigation, route }) {
                     style={[styles.buttonClose]}
                     onPress={() => {
                       setShowGameOverModal(!showGameOverModal);
-                      navigation.navigate("Scoreboard"); // Assume your scoreboard screen is named 'Scoreboard'
+                      navigation.navigate("Scoreboard");
                     }}>
                     <Text style={styles.textStyle}>View Highscore</Text>
                   </Pressable>
